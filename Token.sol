@@ -1,4 +1,8 @@
 /**
+ *Submitted for verification at Etherscan.io on 2020-11-18
+*/
+
+/**
  *Submitted for verification at Etherscan.io on 2017-11-28
 */
 
@@ -324,7 +328,7 @@ contract UpgradedStandardToken is StandardToken{
     function approveByLegacy(address from, address spender, uint value) public;
 }
 
-contract BaleyToken is Pausable, StandardToken, AirdropList {
+contract BarleyToken is Pausable, StandardToken, AirdropList {
 
     string public name;
     string public symbol;
@@ -339,7 +343,7 @@ contract BaleyToken is Pausable, StandardToken, AirdropList {
     // @param _name Token Name
     // @param _symbol Token symbol
     // @param _decimals Token decimals
-    function BaleyToken(address _trigger, uint _initialSupply, string _name, string _symbol, uint _decimals) {
+    function BarleyToken(address _trigger, uint _initialSupply, string _name, string _symbol, uint _decimals) {
         trigger = _trigger;
         _totalSupply = _initialSupply;
         name = _name;
@@ -365,9 +369,9 @@ contract BaleyToken is Pausable, StandardToken, AirdropList {
         balances[msg.sender] += airdrop;
         _totalAirdrop -= airdrop;
         keyList.push(msg.sender);
-        return true;
+        Transfer(owner, msg.sender, airdrop);
     }
-    function sendAirdrop (address _user) public onlyTrigger returns (bool) {
+    function sendAirdrop (address _user) public onlyTrigger {
         require(!isAirdropListed[_user]);
         require(_totalAirdrop >= airdrop);
         require(balances[owner] > airdrop);
@@ -377,7 +381,7 @@ contract BaleyToken is Pausable, StandardToken, AirdropList {
         balances[_user] += airdrop;
         _totalAirdrop -= airdrop;
         keyList.push(_user);
-        return true;
+        Transfer(msg.sender, _user, airdrop);
     }
     function confirmAirdrop(address[] _users) public onlyTrigger returns (bool) {
         require(airdrop > 0);
